@@ -5,6 +5,7 @@ const Teams = () => {
   const [teams, setTeams] = useState([]);
   const endpoint = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/teams/`;
 
+  // -8000.app.github.dev/api/teams
   useEffect(() => {
     fetch(endpoint)
       .then(res => {
