@@ -1,10 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
 
-const Workouts = () => {
-  const [workouts, setWorkouts] = useState([]);
-  const endpoint = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`;
-    // -8000.app.github.dev/api/workouts
+const Teams = () => {
+  const [teams, setTeams] = useState([]);
+  const endpoint = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/teams/`;
 
   useEffect(() => {
     fetch(endpoint)
@@ -13,38 +12,38 @@ const Workouts = () => {
         return res.json();
       })
       .then(data => {
-        console.log('Workouts endpoint:', endpoint);
-        console.log('Fetched workouts:', data);
-        setWorkouts(data.results ? data.results : data);
+        console.log('Teams endpoint:', endpoint);
+        console.log('Fetched teams:', data);
+        setTeams(data.results ? data.results : data);
       })
       .catch(err => {
-        console.error('Error fetching workouts:', err);
-        setWorkouts([]);
+        console.error('Error fetching teams:', err);
+        setTeams([]);
       });
   }, [endpoint]);
 
   return (
     <div className="card mb-4">
       <div className="card-body">
-        <h2 className="card-title mb-4 text-primary">Workouts</h2>
+        <h2 className="card-title mb-4 text-primary">Teams</h2>
         <div className="table-responsive">
           <table className="table table-striped table-hover">
             <thead className="table-dark">
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Type</th>
+                <th>Members</th>
               </tr>
             </thead>
             <tbody>
-              {workouts.length === 0 ? (
+              {teams.length === 0 ? (
                 <tr><td colSpan="3">No data available</td></tr>
               ) : (
-                workouts.map((workout, idx) => (
+                teams.map((team, idx) => (
                   <tr key={idx}>
                     <td>{idx + 1}</td>
-                    <td>{workout.name || workout.title || workout.id || JSON.stringify(workout)}</td>
-                    <td>{workout.type || '-'}</td>
+                    <td>{team.name || team.id || JSON.stringify(team)}</td>
+                    <td>{team.members ? team.members.length : '-'}</td>
                   </tr>
                 ))
               )}
@@ -56,4 +55,4 @@ const Workouts = () => {
   );
 };
 
-export default Workouts;
+export default Teams;
