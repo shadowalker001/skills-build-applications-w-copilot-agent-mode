@@ -7,13 +7,19 @@ const Activities = () => {
 
   useEffect(() => {
     fetch(endpoint)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
       .then(data => {
         console.log('Activities endpoint:', endpoint);
         console.log('Fetched activities:', data);
         setActivities(data.results ? data.results : data);
       })
-      .catch(err => console.error('Error fetching activities:', err));
+      .catch(err => {
+        console.error('Error fetching activities:', err);
+        setActivities([]);
+      });
   }, [endpoint]);
 
   return (

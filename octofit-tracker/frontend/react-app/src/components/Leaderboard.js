@@ -7,13 +7,19 @@ const Leaderboard = () => {
 
   useEffect(() => {
     fetch(endpoint)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
       .then(data => {
         console.log('Leaderboard endpoint:', endpoint);
         console.log('Fetched leaderboard:', data);
         setLeaders(data.results ? data.results : data);
       })
-      .catch(err => console.error('Error fetching leaderboard:', err));
+      .catch(err => {
+        console.error('Error fetching leaderboard:', err);
+        setLeaders([]);
+      });
   }, [endpoint]);
 
   return (

@@ -7,13 +7,19 @@ const Users = () => {
 
   useEffect(() => {
     fetch(endpoint)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
       .then(data => {
         console.log('Users endpoint:', endpoint);
         console.log('Fetched users:', data);
         setUsers(data.results ? data.results : data);
       })
-      .catch(err => console.error('Error fetching users:', err));
+      .catch(err => {
+        console.error('Error fetching users:', err);
+        setUsers([]);
+      });
   }, [endpoint]);
 
   return (

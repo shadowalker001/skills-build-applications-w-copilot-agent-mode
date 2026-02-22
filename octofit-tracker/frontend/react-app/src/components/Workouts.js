@@ -7,13 +7,19 @@ const Workouts = () => {
 
   useEffect(() => {
     fetch(endpoint)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
       .then(data => {
         console.log('Workouts endpoint:', endpoint);
         console.log('Fetched workouts:', data);
         setWorkouts(data.results ? data.results : data);
       })
-      .catch(err => console.error('Error fetching workouts:', err));
+      .catch(err => {
+        console.error('Error fetching workouts:', err);
+        setWorkouts([]);
+      });
   }, [endpoint]);
 
   return (
